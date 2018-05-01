@@ -4,6 +4,8 @@ from docs import messages
 
 from scripts.warehouse import Warehouse
 from docs import private_config as configs
+from telebot import apihelper
+apihelper.proxy = {'https':'https://66.70.147.197:3128'}
 
 
 bot = telebot.TeleBot(configs.TOKEN)
