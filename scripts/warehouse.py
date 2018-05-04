@@ -1,9 +1,12 @@
-from scripts.sqlite3_api import Sqlite3
-from docs import private_config as config
-from docs import messages
 import time
-import pandas as pd
 from datetime import datetime
+
+import pandas as pd
+
+from configs import private_config as config
+from scripts.sqlite3_api import Sqlite3
+
+
 class Warehouse(object):
     """
     Класс - обертка над функционалом Sqlite3: все необходимые запросы обернуты 
@@ -45,7 +48,7 @@ class Warehouse(object):
         except Exception as e:
             print(e)
 
-    def set_payment(self, message):
+    def set_payment_webhook(self, user_id):
         """
         Функция нужна для установки флага об оплате
         :param message: 
@@ -53,8 +56,24 @@ class Warehouse(object):
         """
         request = '''update geishawebinar_bot
                     set payment_status = 1, payment_date = {}
-                    where telegram_id == {}'''.format( message.date,
-                                                       message.from_user.id )
+                    where telegram_id == {}'''.format(time.time(), user_id)
+        try:
+            self.database.set_values(request)
+
+        except Exception as e:
+            print(e)
+
+    def set_payment(self, message):
+        """
+        Функция нужна для установки флага об оплате
+        :param message: 
+        :return: 
+        """
+
+        request = '''update geishawebinar_bot
+                       set payment_status = 1, payment_date = {}
+                       where telegram_id == {}'''.format(message.date,
+                                                         message.from_user.id)
         try:
             self.database.set_values(request)
 

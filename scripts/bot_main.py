@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 import telebot
-from docs import messages
-
-from scripts.warehouse import Warehouse
-from docs import private_config as configs
 from telebot import apihelper
+
+from configs import messages, private_config as configs
+from scripts.warehouse import Warehouse
+
 apihelper.proxy = {'https':'https://66.70.147.197:3128'}
-
-
 bot = telebot.TeleBot(configs.TOKEN)
 warehouse = Warehouse()
+
+
 
 
 @bot.message_handler(commands=['start'])
